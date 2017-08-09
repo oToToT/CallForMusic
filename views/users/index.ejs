@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+	<meta charset="UTF-8">
+	<title>Index</title>
+    </head>
+    <body>
+	<% if(typeof user != "undefined") { %>
+	Hi, <%= user.username %>
+	<br>
+	<a href="./logout">Logout</a>
+	<% } else { %>
+	You are not logined, Please
+	<a href="./login">Login</a> or <a href="./register">Register</a>
+	<% } %>
+    </body>
+</html>
