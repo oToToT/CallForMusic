@@ -1,19 +1,52 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="zh">
     <head>
 	<meta charset="UTF-8">
-	<title>Login</title>
+	<title>登入Call For Music</title>
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
     </head>
     <body>
-	<% if(typeof error != 'undefined'){ %>
-	<%= error %>
-	<% } %>
-	<form action="./login" method="POST">
-	    Username: <input type="text" name="username">
-	    <br>
-	    Password: <input type="password" name="password">
-	    <hr>
-	    <input type="submit" value="Login!">
-	</form>
+	<div class="container" style="margin-top: 5%;">
+	    <% if(typeof errMsg != "undefined"){ %>
+	    <div class="alert alert-danger" role="alert">
+		<%= errMsg %>
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		      <span aria-hidden="true">&times;</span>
+		</button>
+	    </div>
+	    <% } %>
+	    <form action="/users/login" method="POST">
+		<div class="form-group row">
+		    <label for="username" class="col-sm-2 col-form-label">帳號：</label>
+		    <div class="col-sm-10">
+			<input type="text" class="form-control" id="username" name="username" placeholder="請輸入帳號">
+		    </div>
+		</div>
+		<div class="form-group row">
+		    <label for="password" class="col-sm-2 col-form-label">密碼：</label>
+		    <div class="col-sm-10">
+			<input type="password" class="form-control" id="password" name="password" placeholder="請輸入密碼">
+		    </div>
+		</div>
+		<div class="form-group row">
+		    <div class="col-sm-2">保持登入狀態：</div>
+		    <div class="col-sm-10">
+			<div class="form-check">
+			    <label class="form-check-label">
+				<input class="form-check-input" type="checkbox"> 是的，請保持(尚未實作)
+			    </label>
+			</div>
+		    </div>
+		</div>
+		<div class="form-group row">
+		    <div class="col-sm-10">
+			<button type="submit" class="btn btn-primary">Login</button>
+		    </div>
+		</div>
+	    </form>
+	</div>
+	<script src="/javascripts/jquery.min.js"></script>
+	<script src="/javascripts/popper.min.js"></script>
+	<script src="/javascripts/bootstrap.min.js"></script>
     </body>
 </html>

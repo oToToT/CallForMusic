@@ -11,7 +11,7 @@ router.get('/register', function(req, res){
     res.render(Root+'/register', {});
 });
 router.get('/login', function(req, res){
-    res.render(Root+'/login', req.flash());
+    res.render(Root+'/login', {errMsg: req.flash().error});
 });
 router.get('/logout', function(req, res){
     req.logout();
@@ -23,7 +23,6 @@ router.post('/register', function(req, res){
 		    req.body.password, 
 		    function(err, account){
 	if(err){
-            // err.name, err.message
 	    return res.render(Root+'/register', { errMsg: err.message });
 	}
 	passport.authenticate('local')(req, res, function() {
