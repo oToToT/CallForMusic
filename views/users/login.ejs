@@ -5,6 +5,9 @@
 	<title>Login</title>
     </head>
     <body>
+	<% if(typeof error != 'undefined'){ %>
+	<%= error %>
+	<% } %>
 	<form action="./login" method="POST">
 	    Username: <input type="text" name="username">
 	    <br>

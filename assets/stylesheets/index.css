@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css?family=Sedgwick+Ave+Display|Indie+Flower|Rajdhani');
+* {
+    margin: 0;
+}
+h1{
+    font-weight: normal;
+    font-size: 5em;
+}
+#Title{
+    font-family: 'Sedgwick Ave Display', cursive;
+    margin-bottom: 2%;
+}
+h2{
+    font-weight: normal;
+    font-size: 2em;
+}
+#Sub{
+    font-family: 'Indie Flower', cursive;
+    margin-bottom: 2%;
+}
+#background{
+    position: absolute; 
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    background-image: url('../images/index.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#background>iframe{
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: 0;
+}
+#main{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    color: #ddf;
+    font-size: 20px;
+    padding-top: 20%;
+}
+.button{
+    display: inline-block;
+    border-width: 2px;
+    border-radius: 5px;
+    border-style: solid;
+    width: 30%;
+    height: 5%;
+    min-height: 18px;
+    min-width: 100px;
+    cursor: pointer;
+    background-color: rgba(230, 230, 255, 0);
+    color: rgb(200, 160, 200);
+    text-decoration: none;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: bold;
+}
+.button:hover{
+    transition: 0.3s;
+    background-color: rgba(230, 230, 255, 0.3);
+    color: #ddf;
+}
+.button span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+#toggle-down{
+    display: inline-block;
+    border-style: solid;
+    border-width: 3px;
+    border-radius: 30px;
+    font-size: 30px;
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+    margin-top: 5%;
+}
+#toggle-down:hover{
+    transition: 0.3s;
+    background-color: rgba(230, 230, 255, 0.3);
+    cursor:pointer;
+}

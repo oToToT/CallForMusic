@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var flash = require('req-flash');
 var helmet = require('helmet');
 var passport = require('passport');
 var mongoose = require('mongoose');
@@ -32,7 +33,9 @@ app.use(require('express-session')({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
+app.use(express.static(path.join(__dirname, 'assets')));
+
 
 app.use('/', index);
 app.use('/users', users);

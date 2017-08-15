@@ -12,5 +12,10 @@
 	    <hr>
 	    <input type="submit" value="Register!" />
 	</form>
+	<% if(typeof errMsg != 'undefined'){ %>
+	<script>
+	    alert("Error: <%= errMsg %>"); 
+	</script>
+	<% } %>
     </body>
 </html>
