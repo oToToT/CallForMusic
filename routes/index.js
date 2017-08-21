@@ -17,5 +17,8 @@ router.get('/', function(req, res, next) {
 router.get('/play', function(req, res) {
     res.render('gameplay', { username: req.user.username });
 });
+router.get('/test', function(req, res) {
+    res.render('socket', {} );
+});
 
 module.exports = router;
