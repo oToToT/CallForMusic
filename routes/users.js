@@ -8,10 +8,18 @@ router.get('/', function(req, res){
     res.render(Root+'/index', { user: req.user });
 });
 router.get('/register', function(req, res){
-    res.render(Root+'/register', {});
+    res.render(Root+'/register', {
+	title: '註冊 Call For Music',
+	css: ['/stylesheets/bootstrap.min.css'],
+	errMsg: req.flash().error
+    });
 });
 router.get('/login', function(req, res){
-    res.render(Root+'/login', {errMsg: req.flash().error});
+    res.render(Root+'/login', {
+	title: '登入 Call For Music',
+	css: ['/stylesheets/bootstrap.min.css'],
+    	errMsg: req.flash().error
+    });
 });
 router.get('/logout', function(req, res){
     req.logout();
@@ -23,7 +31,8 @@ router.post('/register', function(req, res){
 		    req.body.password, 
 		    function(err, account){
 	if(err){
-	    return res.render(Root+'/register', { errMsg: err.message });
+	    req.flash('error', err.message);
+	    return res.redirect('/users/register');
 	}
 	passport.authenticate('local')(req, res, function() {
 	    res.redirect('./');

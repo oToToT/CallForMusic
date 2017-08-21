@@ -6,7 +6,10 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
     if(typeof req.user === "undefined")
-	res.render('index', { title: 'Express' });
+	res.render('index', {
+	    title: 'Call For Music - A New Style Music Game',
+	    css: ['/stylesheets/index.css']
+	});
     else
     	res.redirect('/play');
 });
