@@ -1,8 +1,15 @@
+var MobileDetect = require('mobile-detect');
+
 function IOHandler(io) {
     io.on('connection', function(socket) {
-        console.log("> connected with socketIO");
-        console.log(String(socket.request.user.username) + "has logined with socket");
-        socket.emit('hi', { message: "hi" });
+        var md = new MobileDetect(socket.request.headers['user-agent']);
+        socket.join(socket.request.user.username, function() {
+            if (md.mobile()) {
+                io.to(socket.request.user.username).emit("join", 1);
+            } else {
+                io.to(socket.request.user.username).emit("join", 2);
+            }
+        });
     });
 }
 

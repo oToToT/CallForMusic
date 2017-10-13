@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html lang="zh">
+    <%- include('../head', {title: title, css: css}); %>
+    <body>
+
+        <div id="msg" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                    </div>
+                    <div class="modal-body" style="text-align:center;"></div>
+                </div>
+            </div>
+        </div>
+        <script>var username = "<%= username %>";</script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/javascripts/jquery.min.js"></script>
+        <script src="/javascripts/popper.min.js"></script>
+        <script src="/javascripts/bootstrap.min.js"></script>
+        <script src="/javascripts/gameplay/display.js"></script>
+        <script>
+        $("#msg").modal({
+            backdrop: "static",
+            keyboard: false
+        });
+        </script>
+    </body>
+</html>
