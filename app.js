@@ -30,8 +30,8 @@ var sessionStore = new session.MemoryStore();
 app.use(session({
     secret: 'LQcbfu1wfJAgKLFZNG4X',
     store: sessionStore,
-    resave: false, 
-    saveUninitialized: false, 
+    resave: false,
+    saveUninitialized: false,
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -52,26 +52,33 @@ var io = socketIO();
 io.use(passportSocketIo.authorize({
     cookieParser: cookieParser,
     secret: 'LQcbfu1wfJAgKLFZNG4X',
-    store: sessionStore
+    store: sessionStore,
+    passport: passport,
+    success: function(data, accept) {
+        accept();
+    },
+    fail: function(data, message, error, accept) {
+        return accept(new Error(message));
+    }
 }));
 app.io = io;
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
 
 module.exports = app;

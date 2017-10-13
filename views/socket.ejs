@@ -6,9 +6,9 @@
     <body>
 	<script src="/socket.io/socket.io.js"></script>
 	<script>
-	    var socket = io('http://localhost:3000');
+	    var socket = io('/');
 	    socket.on('hi', function (data) {
-		console.log(data);
+			console.log(data);
 	    });
 	</script>
     </body>
