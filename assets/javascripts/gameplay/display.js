@@ -23,6 +23,13 @@ function gamerender(time) {
 }
 requestAnimationFrame(gamerender);
 
+$("#msg").on("shown.bs.modal", function(){
+    if($(this).data("hidden")) $(this).modal("hide");
+});
+$("#msg").on("hidden.bs.modal", function(){
+    if(!$(this).data("hidden")) $(this).modal("show");
+});
+
 var socket = io('/');
 socket.on('connect', function() {
     $("#msg .modal-title").text('等待手機連線中');
@@ -34,13 +41,13 @@ socket.on('connect', function() {
         Loading Icon by <a href="https://loading.io/spinner/double-ring" target="_blank">loading.io</a>`
     );
     $("#msg").modal("show");
+    $("#msg").data("hidden", false);
 });
-socket.on('join', function(data) {
-    if (data == 1) {
-        $("#msg").modal("hide");
+socket.on('devices', function(data) {
+    if (data.computer && data.mobile) {
+        $("#msg").data("hidden", true);
         game_status.paused = false;
     }
-    console.log(data);
 });
 socket.on("note", function(data) {
     var newnote = document.createElement("div");
