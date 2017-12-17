@@ -36,11 +36,13 @@ router.get('/game/play', function(req, res) {
     } else {
         res.render('game/play', {
             title: 'Call For Music - Let\'s Rock!',
-            css: ['/stylesheets/bootstrap.min.css'],
-            username: req.user.username
+            css: ['/stylesheets/bootstrap.min.css',
+                '/stylesheets/game/play.css'],
+            username: req.user.username,
+            video_id: "1SOug6QU7OI"
         });
     }
-}
+});
 
 router.get('/game/control', function(req, res) {
     // req.pid for song select
@@ -53,6 +55,6 @@ router.get('/game/control', function(req, res) {
             username: req.user.username
         });
     }
-}
+});
 
 module.exports = router;

@@ -1,0 +1,49 @@
+#background{
+    position: absolute; 
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    background-image: url('../images/index.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#background>iframe{
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: 0;
+}
+#beat_bar{
+    width: 100vw;
+    position: absolute;
+    z-index: 2;
+    top: calc(100vh - 10vh);
+    height: 30px;
+    background-color: rgb(255,255,255);
+    transition: 0.1s;
+    box-shadow: 2px 2px 3px #888888;
+}
+#falling{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 5;
+}
+.note{
+    position:absolute;
+    bottom:0px;
+    left:0px;
+    width: 100vw;
+    height:5vh;
+    background-image:linear-gradient(rgb(0,100,0),rgb(0,0,0));
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-top-color:rgb(0,0,0);
+    z-index: 2;
+}
