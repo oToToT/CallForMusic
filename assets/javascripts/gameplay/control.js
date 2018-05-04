@@ -17,9 +17,7 @@ $("#msg").on("hidden.bs.modal", function() {
             var data = e.accelerationIncludingGravity;
             if (Math.abs(data.x - pre_x) > threshold || Math.abs(data.y - pre_y) > threshold || Math.abs(data.z - pre_z) > threshold) {
                 var t = Date.now();
-                if (t - pre_t > 100) {
-                    socket.emit("beat", { time: Date.now() });
-                }
+                if (t - pre_t > 100) socket.emit("beat", { time: t });
                 pre_t = t;
             }
             pre_x = data.x;
