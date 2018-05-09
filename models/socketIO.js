@@ -16,18 +16,18 @@ function IOHandler(io) {
             } else {
                 devices.computer = true;
             }
-            io.to(roomname).emit("devices", devices);
+            io.to(roomname).emit('devices', devices);
             roomdata[roomname].devices = devices;
         });
         socket.on('beat', function(data) {
             io.to(roomname).emit('beat');
-            // console.log("Hit!", data);
+            // console.log('Hit!', data);
         });
         socket.on('disconnect', function() {
             var devices = roomdata[roomname].devices;
             if (md.mobile()) devices.mobile = false;
             else devices.computer = false;
-            io.to(roomname).emit("devices", devices);
+            io.to(roomname).emit('devices', devices);
             roomdata[roomname].devices = devices;
         });
     });
