@@ -1,49 +1,260 @@
-#background{
-    position: absolute; 
+@import url('https://fonts.googleapis.com/css?family=Sedgwick+Ave+Display|Indie+Flower|Rajdhani');
+#upload_file {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    text-align: center;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
     z-index: 1;
-    background-image: url('../images/index.png');
+    background-image: url('/images/concert.jpg');
     background-repeat: no-repeat;
     background-size: cover;
 }
-#background>iframe{
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    z-index: 0;
+
+#upload_file h1 {
+    font-family: 'Sedgwick Ave Display', cursive;
+    font-style: italic;
+    font-size: 3.5em;
+    font-weight: bold;
+    color: #0012ff;
 }
-#beat_bar{
+
+#choose_file {
+    display: inline-block;
+    color: #6caaec;
+    font-size: 16em;
+    transition: 0.3s;
+}
+
+#choose_file:hover {
+    text-decoration: none;
+    color: #007bff;
+}
+
+#generate {
+    display: inline-block;
+    background-color: transparent;
+    background-image: linear-gradient(90deg, #ffffff00, #0000009e);
+    color: #ffc100;
+    width: 40%;
+    font-size: 1.5em;
+    border-color: #ffc100;
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-width: 1px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#generate:hover {
+    background-image: linear-gradient(45deg, #ffffff00, #0000009e);
+    font-size: 1.8em;
+}
+
+#upload_mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    color: white;
+    background-color: #00000099;
+    line-height: 100vh;
+    vertical-align: middle;
+    font-size: 3em;
+}
+
+@keyframes lds-pacman-1 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    50% {
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+    }
+    100% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+}
+
+@-webkit-keyframes lds-pacman-1 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    50% {
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+    }
+    100% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes lds-pacman-2 {
+    0% {
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+    50% {
+        -webkit-transform: rotate(225deg);
+        transform: rotate(225deg);
+    }
+    100% {
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+}
+
+@-webkit-keyframes lds-pacman-2 {
+    0% {
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+    50% {
+        -webkit-transform: rotate(225deg);
+        transform: rotate(225deg);
+    }
+    100% {
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes lds-pacman-3 {
+    0% {
+        -webkit-transform: translate(190px, 0);
+        transform: translate(190px, 0);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translate(70px, 0);
+        transform: translate(70px, 0);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes lds-pacman-3 {
+    0% {
+        -webkit-transform: translate(190px, 0);
+        transform: translate(190px, 0);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translate(70px, 0);
+        transform: translate(70px, 0);
+        opacity: 1;
+    }
+}
+
+.lds-pacman {
+    position: relative;
+}
+
+.lds-pacman>div:nth-child(2) div {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    width: 120px;
+    height: 60px;
+    border-radius: 120px 120px 0 0;
+    background: #fdcc00;
+    -webkit-animation: lds-pacman-1 0.9s linear infinite;
+    animation: lds-pacman-1 0.9s linear infinite;
+    -webkit-transform-origin: 60px 60px;
+    transform-origin: 60px 60px;
+}
+
+.lds-pacman>div:nth-child(2) div:nth-child(2) {
+    -webkit-animation: lds-pacman-2 0.9s linear infinite;
+    animation: lds-pacman-2 0.9s linear infinite;
+}
+
+.lds-pacman>div:nth-child(1) div {
+    position: absolute;
+    top: 92px;
+    left: -8px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    color: #000;
+    -webkit-animation: lds-pacman-3 0.9s linear infinite;
+    animation: lds-pacman-3 0.9s linear infinite;
+}
+
+.lds-pacman>div:nth-child(1) div:nth-child(1) {
+    -webkit-animation-delay: -0.603s;
+    animation-delay: -0.603s;
+}
+
+.lds-pacman>div:nth-child(1) div:nth-child(2) {
+    -webkit-animation-delay: -0.297s;
+    animation-delay: -0.297s;
+}
+
+.lds-pacman>div:nth-child(1) div:nth-child(3) {
+    -webkit-animation-delay: 0s;
+    animation-delay: 0s;
+}
+
+.lds-pacman {
+    width: 200px !important;
+    height: 200px !important;
+    -webkit-transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+    transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+}
+
+#loading {
+    display: inline-block;
+}
+
+#loading>span {
+    color: white;
+    background-color: #a900ff;
+    font-size: 1.7em;
+}
+
+#beat_bar {
     width: 100vw;
     position: absolute;
     z-index: 2;
     top: calc(100vh - 10vh);
     height: 30px;
-    background-color: rgb(255,255,255);
+    background-color: rgb(255, 255, 255);
     transition: 0.1s;
     box-shadow: 2px 2px 3px #888888;
 }
-#falling{
+
+#falling {
     width: 100vw;
     height: 100vh;
     position: absolute;
     z-index: 5;
 }
-.note{
-    position:absolute;
-    bottom:0px;
-    left:0px;
+
+.note {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
     width: 100vw;
-    height:5vh;
-    background-image:linear-gradient(rgb(0,100,0),rgb(0,0,0));
+    height: 5vh;
+    background-image: linear-gradient(rgb(0, 100, 0), rgb(0, 0, 0));
     border-top-style: solid;
     border-top-width: 1px;
-    border-top-color:rgb(0,0,0);
+    border-top-color: rgb(0, 0, 0);
     z-index: 2;
 }

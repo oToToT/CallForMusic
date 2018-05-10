@@ -2,8 +2,38 @@
 <html lang="zh">
     <%- include('../head', {title: title, css: css}); %>
     <body>
-        <div id="background">
-            <iframe width="720" height="405" id="ytplayer" src="https://www.youtube.com/embed/<%= video_id %>?autoplay=1&amp;controls=0&amp;enablejsapi=1&amp;fs=0&amp;rel=0&amp;showinfo=0&amp;color=white&amp;disablekb=1" frameborder="0" allowfullscreen="" type="text/html"></iframe>
+        <div id="upload_file">
+            <div>
+                <h1>Upload The Music, Enjoy The Game!</h1>
+                <br>
+                <a id="choose_file" href="#" class="fa fa-cloud-upload" aria-hidden="true"></a>
+                <input type="file" style="display:none;" id="file_uploader">
+                <div id="loading" style="display:none;">
+                    <div class="lds-css ng-scope">
+                        <div style="width:100%;height:100%" class="lds-pacman">
+                            <div>
+                                <div class="fa fa-file-audio-o"></div>
+                                <div class="fa fa-file-text"></div>
+                                <div class="fa fa-file"></div>
+                            </div>
+                            <div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <span>Please Wait While File Uploading...</span>
+                </div>
+                <!--<br>
+                <button id="generate">Let's Rock!</button>-->
+            </div>
+            <div id="upload_mask" style="display:none;">
+                Drag To Here!
+            </div>
+        </div>
+        <!--<div id="background">
+            
         </div>
         <div id="playground">
             <div id="falling">
@@ -19,12 +49,14 @@
                     <div class="modal-body" style="text-align:center;"></div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <script>var username = "<%= username %>";</script>
         <script src="/socket.io/socket.io.js"></script>
+        <script src="/javascripts/SHA256.js"></script>
         <script src="/javascripts/jquery.min.js"></script>
         <script src="/javascripts/popper.min.js"></script>
         <script src="/javascripts/bootstrap.min.js"></script>
+        <script src="/javascripts/gameplay/file-parser.js"></script>
         <script src="/javascripts/gameplay/play.js"></script>
     </body>
 </html>
