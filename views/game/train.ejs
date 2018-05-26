@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Train</title>
+    <style>
+        * {
+            margin: 0;
+        }
+        
+        .cool {
+            display: inline-block;
+            width: calc( (100vw - 100px) / 128);
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="file" id="upload">
+    <button id="start">Start!</button>
+    <br>
+    <div id="plot">
+        <div style="height: 550px;">
+            <div style='display:inline-block;height:550px;width:6px;' v-bind:style="{ backgroundColor: hit?'red':'transparent' }"></div>
+            <div class='cool' v-for="data in freq_domain" v-bind:style="{ height: `${data + 250}px` }"></div>
+        </div>
+    </div>
+    <script src="/javascripts/vue.js"></script>
+    <script src="/javascripts/queue.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const FFT_SIZE = 256,
+            time_threshold = 100,
+            time_elpased = 400,
+            note_data = [3.5400, 4.0200, 4.5000, 4.9800, 5.4600, 5.9400, 6.4200, 6.9000, 7.3800, 7.8600, 8.3400, 8.8200, 9.3000, 9.7800, 10.2600, 10.7400, 11.2200, 11.7000, 11.7000, 12.1800, 12.4200, 12.6600, 13.1400, 13.6200, 13.6200, 14.1000, 14.3400, 14.5800, 15.0600, 15.5400, 16.0200, 16.2600, 16.5000, 16.7400, 18.1800, 18.4200, 18.9000, 19.3800, 19.8600, 20.3400, 20.8200, 21.3000, 21.7800, 22.0200, 22.2600, 22.7400, 23.2200, 23.7000, 24.1800, 24.6600, 25.1400, 25.6200, 25.8600, 26.1000, 26.5800, 27.0600, 27.5400, 28.0200, 28.5000, 28.9800, 29.4600, 29.9400, 30.4200, 30.9000, 31.3800, 31.8600, 32.1000, 32.5800, 32.8200, 33.3000, 34.2600, 34.7400, 34.9800, 35.4600, 35.7000, 36.1800, 36.6600, 36.9000, 37.3800, 37.6200, 38.1000, 38.5800, 38.8200, 39.3000, 39.5400, 40.0200, 40.5000, 40.9800, 41.2200, 41.4600, 41.9400, 42.4200, 42.9000, 43.3800, 43.3800, 43.8600, 44.3400, 44.8200, 45.3000, 45.7800, 46.2600, 46.5000, 46.9800, 47.2200, 47.7000, 47.9400, 48.1800, 48.4200, 48.9000, 49.1400, 49.6200, 50.3400, 50.5800, 51.5400, 51.7800, 52.2600, 52.5000, 52.9800, 53.4600, 54.1800, 54.4200, 55.3800, 55.6200, 56.1000, 56.3400, 56.8200, 57.3000, 58.0200, 58.2600, 58.9800, 59.2200, 59.7000, 60.1800, 60.6600, 60.9000, 61.1400, 61.6200, 62.1000, 62.3400, 62.5800, 63.0600, 63.5400, 64.0200, 64.2600, 64.5000, 64.9800, 65.9400, 66.4200, 66.9000, 67.1400, 67.3800, 68.3400, 68.8200, 69.3000, 69.7800, 70.0200, 70.2600, 70.7400, 70.9800, 71.2200, 71.7000, 71.9400, 72.1800, 72.6600, 73.1400, 73.6200, 73.8600, 74.1000, 74.5800, 74.8200, 75.0600, 75.5400, 75.7800, 76.0200, 76.5000, 76.9800, 77.4600, 77.9400, 78.4200, 78.9000, 79.3800, 79.8600, 80.3400, 80.8200, 81.3000, 81.5400, 81.7800, 82.2600, 82.5000, 82.7400, 82.9800, 83.2200, 83.4600, 83.7000, 84.1800, 84.6600, 85.1400, 85.3800, 85.6200, 86.1000, 86.3400, 86.5800, 87.0600, 87.3000, 87.5400, 88.0200, 88.5000, 88.9800, 89.2200, 89.4600, 89.9400, 90.1800, 90.4200, 90.9000, 91.1400, 91.3800, 91.8600, 92.3400, 92.8200, 93.3000, 93.7800, 94.2600, 94.7400, 95.2200, 95.7000, 95.9400, 96.1800, 96.4200, 96.6600, 96.9000, 97.1400, 97.6200, 98.3400, 98.5800, 99.0600, 99.5400, 100.0200, 100.5000, 100.9800, 101.4600, 101.9400, 102.4200, 102.9000, 103.3800, 103.8600, 104.3400, 104.8200, 105.3000, 105.7800, 106.2600, 106.2600, 106.7400, 107.2200, 107.7000, 108.1800, 108.4200, 108.6600, 109.1400, 109.6200, 110.1000, 110.3400, 110.5800, 111.0600, 111.5400, 112.0200, 112.2600, 112.5000, 112.7400, 114.1800, 114.4200, 114.9000, 118.7400];
+        let vm = new Vue({
+            el: '#plot',
+            data: {
+                freq_domain: new Int32Array(FFT_SIZE >> 1),
+                time_domain: new Uint8Array(FFT_SIZE),
+                hit: false
+            }
+        });
+        document.getElementById('start').addEventListener('click', () => {
+            let reader = new FileReader();
+            reader.onload = async(e) => {
+                const audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                let source = audioCtx.createBufferSource();
+                source.buffer = await audioCtx.decodeAudioData(e.target.result);
+                let analyser = audioCtx.createAnalyser();
+                analyser.fftSize = FFT_SIZE;
+                source.connect(analyser);
+                analyser.connect(audioCtx.destination);
+                source.start();
+
+                let beat_pos = 0,
+                    init_time = -1,
+                    pre_queue = new Queue(),
+                    avg_array = new Uint32Array(analyser.frequencyBinCount);
+
+                function process_fft_data(timer) {
+                    if (init_time === -1) init_time = timer;
+                    const cur_time = timer - init_time;
+                    while (beat_pos < note_data.length &&
+                        note_data[beat_pos] * 1000 + time_threshold <= cur_time) {
+                        beat_pos++;
+                    }
+                    vm.hit = (beat_pos < note_data.length &&
+                        note_data[beat_pos] * 1000 <= cur_time &&
+                        cur_time < note_data[beat_pos] * 1000 + time_threshold);
+                    analyser.getByteTimeDomainData(vm.time_domain);
+
+                    let freq_array = new Uint8Array(analyser.frequencyBinCount);
+                    analyser.getByteFrequencyData(freq_array);
+                    for (let i = 0; i < freq_array.length; i++) {
+                        vm.freq_domain[i] = freq_array[i];
+                    }
+                    for (let i = 0; i < freq_array.length; i++) {
+                        avg_array[i] += freq_array[i];
+                    }
+                    pre_queue.push({
+                        t: timer,
+                        freq: freq_array
+                    });
+                    while (pre_queue.length && pre_queue.front().t + time_elpased < timer) {
+                        for (let i = 0; i < pre_queue.front().freq.length; i++) {
+                            avg_array[i] -= pre_queue.front().freq[i];
+                        }
+                        pre_queue.pop();
+                    }
+                    for (let i = 0; i < vm.freq_domain.length; i++) {
+                        vm.freq_domain[i] -= avg_array[i] / pre_queue.length;
+                    }
+                    vm.$forceUpdate();
+                    requestAnimationFrame(process_fft_data);
+                }
+                requestAnimationFrame(process_fft_data);
+            };
+            reader.readAsArrayBuffer(document.getElementById('upload').files[0]);
+        });
+    </script>
+</body>
+
+</html>

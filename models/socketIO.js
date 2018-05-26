@@ -1,13 +1,18 @@
 var MobileDetect = require('mobile-detect');
 var roomdata = {};
+const fs = require('fs');
+const write_stream = fs.createWriteStream('music_data');
+let tf = true;
 
 function IOHandler(io) {
-    io.on('connection', function(socket) {
-        var roomname = socket.request.user.username;
-        var md = new MobileDetect(socket.request.headers['user-agent']);
+    io.on('connection', (socket) => {
+        console.log('hi!!');
+        tf = true;
+        const roomname = socket.request.user.username;
+        let md = new MobileDetect(socket.request.headers['user-agent']);
         if (typeof roomdata[roomname] === 'undefined') roomdata[roomname] = {};
-        socket.join(roomname, function() {
-            var devices = roomdata[roomname].devices;
+        socket.join(roomname, () => {
+            let devices = roomdata[roomname].devices;
             if (typeof devices === 'undefined') {
                 devices = { mobile: false, computer: false };
             }
@@ -19,16 +24,24 @@ function IOHandler(io) {
             io.to(roomname).emit('devices', devices);
             roomdata[roomname].devices = devices;
         });
-        socket.on('beat', function(data) {
+        socket.on('beat', (data) => {
             io.to(roomname).emit('beat');
-            // console.log('Hit!', data);
+            console.log('Hit!', data);
         });
-        socket.on('disconnect', function() {
+        socket.on('disconnect', () => {
             var devices = roomdata[roomname].devices;
             if (md.mobile()) devices.mobile = false;
             else devices.computer = false;
             io.to(roomname).emit('devices', devices);
             roomdata[roomname].devices = devices;
+        });
+        socket.on('data', (data) => {
+            if (!tf) return;
+            write_stream.write(data.tf ? '1' : '0');
+            for (let i = 0; i < 128; i++) {
+                write_stream.write(` ${i+1}:${data.arr[i]}`);
+            }
+            write_stream.write('\n');
         });
     });
 }

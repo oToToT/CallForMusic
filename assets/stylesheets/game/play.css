@@ -13,6 +13,8 @@
     background-image: url('/images/concert.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    transform: scale(1, 1);
+    transition: 0.5s;
 }
 
 #upload_file h1 {

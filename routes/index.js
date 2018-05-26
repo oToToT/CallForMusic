@@ -57,5 +57,8 @@ router.get('/game/control', function(req, res) {
         });
     }
 });
+router.get('/game/train', function(req, res) {
+    res.render('game/train');
+});
 
 module.exports = router;

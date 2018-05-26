@@ -5,9 +5,13 @@
         <div id="upload_file">
             <div>
                 <h1>Upload The Music, Enjoy The Game!</h1>
-                <br>
-                <a id="choose_file" href="#" class="fa fa-cloud-upload" aria-hidden="true"></a>
-                <input type="file" style="display:none;" id="file_uploader">
+                <div id="choosing" style="display:block;">
+                    <a id="choose_file" href="#" class="fa fa-cloud-upload" aria-hidden="true"></a>
+                    <input type="file" style="display:none;" id="file_uploader" accept="audio/*">
+                    <div id="upload_mask" style="display:none;">
+                        Drag To Here!
+                    </div>
+                </div>
                 <div id="loading" style="display:none;">
                     <div class="lds-css ng-scope">
                         <div style="width:100%;height:100%" class="lds-pacman">
@@ -25,11 +29,6 @@
                     <br>
                     <span>Please Wait While File Uploading...</span>
                 </div>
-                <!--<br>
-                <button id="generate">Let's Rock!</button>-->
-            </div>
-            <div id="upload_mask" style="display:none;">
-                Drag To Here!
             </div>
         </div>
         <!--<div id="background">
@@ -56,7 +55,7 @@
         <script src="/javascripts/jquery.min.js"></script>
         <script src="/javascripts/popper.min.js"></script>
         <script src="/javascripts/bootstrap.min.js"></script>
-        <script src="/javascripts/gameplay/file-parser.js"></script>
+        <script src="/javascripts/sweetalert2.all.min.js"></script>
         <script src="/javascripts/gameplay/play.js"></script>
     </body>
 </html>
