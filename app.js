@@ -39,7 +39,7 @@ app.use(flash());
 app.use(express.static(path.join(__dirname, 'assets')));
 
 app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'));
+app.use('/game', require('./routes/game'));
 
 // passport config
 var Account = require('./models/account');

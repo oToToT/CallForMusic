@@ -1,11 +1,11 @@
-var express = require('express');
-var passport = require('passport');
-var Account = require('../models/account');
-var MobileDetect = require('mobile-detect');
-var router = express.Router();
+const express = require('express');
+const passport = require('passport');
+const Account = require('../models/account');
+const MobileDetect = require('mobile-detect');
+const router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res) {
     if (typeof req.user === 'undefined') {
         res.render('index', {
             title: 'Call For Music - A New Style Music Game',
@@ -16,49 +16,66 @@ router.get('/', function(req, res, next) {
     }
 });
 
-router.get('/game', function(req, res) {
-    if (typeof req.user === 'undefined') {
-        res.redirect('/');
-    } else {
-        var md = new MobileDetect(req.headers['user-agent']);
-        if (md.mobile()) {
-            res.redirect('/game/control');
-        } else {
-            res.redirect('/game/play');
-        }
-    }
+router.get('/profile/:id', function (req, res) {
+
 });
 
-router.get('/game/play', function(req, res) {
-    // req.pid for song select
-    if (typeof req.user === 'undefined') {
-        res.redirect('/');
-    } else {
-        res.render('game/play', {
-            title: 'Call For Music - Let\'s Rock!',
-            css: ['/stylesheets/bootstrap.min.css',
-                '/stylesheets/game/play.css'
-            ],
-            username: req.user.username,
-            video_id: '1SOug6QU7OI'
-        });
-    }
-});
-
-router.get('/game/control', function(req, res) {
-    // req.pid for song select
-    if (typeof req.user === 'undefined') {
-        res.redirect('/');
-    } else {
-        res.render('game/control', {
-            title: 'Call For Music - Shake it!',
+router.get('/setting', function (req, res) {
+    if (typeof req.user !== 'undefined') {
+        res.render('setting', {
+            title: 'Call For Music',
             css: ['/stylesheets/bootstrap.min.css'],
-            username: req.user.username
+            errMsg: req.flash().error,
+            user: req.user
         });
+    } else {
+        res.redirect('/');
     }
 });
-router.get('/game/train', function(req, res) {
-    res.render('game/train');
+router.get('/register', function (req, res) {
+    res.render('register', {
+        title: '註冊 | Call For Music',
+        css: ['/stylesheets/bootstrap.min.css',
+            '/stylesheets/register.css',
+            '/stylesheets/sweetalert2.min.css',
+            '/stylesheets/cropper.min.css'
+        ],
+        errMsg: req.flash().error
+    });
 });
+router.get('/login', function (req, res) {
+    res.render('login', {
+        title: '登入 | Call For Music',
+        css: ['/stylesheets/bootstrap.min.css'],
+        errMsg: req.flash().error
+    });
+});
+router.get('/logout', function (req, res) {
+    req.logout();
+    res.redirect('./');
+});
+
+router.post('/register', function (req, res) {
+    Account.register(new Account({
+        username: req.body.username,
+        introduction: req.body.intro,
+        icon: req.body.imagePath
+    }),
+    req.body.password,
+    function (err) {
+        if (err) {
+            req.flash('error', err.message);
+            return res.redirect('/users/register');
+        }
+        passport.authenticate('local')(req, res, function () {
+            res.redirect('./');
+        });
+    });
+});
+router.post('/login', passport.authenticate('local', {
+    successRedirect: '/users',
+    failureRedirect: '/users/login',
+    failureFlash: true
+}));
 
 module.exports = router;

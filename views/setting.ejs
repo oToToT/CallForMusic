@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<%- include('head', {title: title, css:css}); %>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">
+                <img src="/images/favicon/apple-icon.png" width="35" height="35" class="d-inline-block align-top" alt="">
+                Call For Music
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav mr-auto">
+                    <a class="nav-item nav-link" href="/game">Game</a>
+                    <a class="nav-item nav-link" href="/history">History</a>
+                    <a class="nav-item nav-link active" href="/users">Setting<span class="sr-only">(current)</span></a>
+                </div>
+                <div>
+                    <span class="nav-item navbar-text mr-3">Hi, <%= user.username %> </span>
+                    <a href="/users/logout" role="button" class="nav-item btn btn-outline-warning">Logout</a>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <h1> <%= user.username %> </h1>
+            <br>
+            <a href="/users/logout">Logout</a>
+        </div>
+        <script src="/javascripts/jquery.min.js"></script>
+        <script src="/javascripts/popper.min.js"></script>
+        <script src="/javascripts/bootstrap.min.js"></script>
+    </body>
+</html>

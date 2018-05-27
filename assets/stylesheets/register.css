@@ -1,0 +1,15 @@
+#imgUpload {
+    display: inline-block;
+    height: 180px;
+    width: 180px;
+    background-image: url('/images/cropped_avatar.png');
+    background-size: 180px;
+    cursor: pointer;
+    line-height: 180px;
+    color: transparent;
+    user-select: none;
+}
+
+#imgUpload:hover {
+    color: white;
+}

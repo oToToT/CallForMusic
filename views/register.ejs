@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html lang="zh">
+    <%- include('head', {title: title, css:css}); _%>
+    <body>
+        <div class="container-fluid py-3" style="min-height:100vh;">
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <div class="card border-primary bg-light">
+                        <div class="bg-white text-primary card-header text-center">註冊Call For Music</div>
+                        <div class="card-body">
+                            <form action="/users/register" method="POST">
+                                <div class="form-group text-center">
+                                    <div class="rounded-circle" id="imgUpload" data-url='/images/cropped_avatar.png'>Upload Image</div>
+                                    <input id="icon" type="file" name="icon" hidden="hidden" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="username">帳號：</label>
+                                    <input class="form-control input-lg" id="username" type="text" name="username" placeholder="請輸入帳號" />
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="password">密碼：</label>
+                                        <input class="form-control input-lg" id="password" type="password" name="password" placeholder="請輸入密碼" />
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="passwcheckPasswordord">確認密碼：</label>
+                                        <input class="form-control input-lg" id="checkPassword" type="password" placeholder="請再次輸入密碼" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="introduction">自我介紹</label>
+                                    <textarea class="form-control" id="introduction" type="password" name="introduction" rows="5" placeholder="向眾人介紹自己">Hello, World</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12 g-recaptcha" data-sitekey="6Lftm1sUAAAAAIdXCNYWPNDp3tIPYRkxhPsXkMAx"></div>
+                                </div>
+                                <button class="btn btn-primary btn-large btn-block" type="submit">Register</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="cropImage" tabindex="-1" role="dialog" aria-labelledby="CropTheModal" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">請裁切圖片至正方形</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <img class='img-fluid' src="/images/cropped_avatar.png" id="hiddenIcon">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="cropIt">確定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/javascripts/jquery.min.js"></script>
+        <script src="/javascripts/popper.min.js"></script>
+        <script src="/javascripts/bootstrap.min.js"></script>
+        <script src="/javascripts/sweetalert2.all.min.js"></script>
+        <script src="/javascripts/cropper.min.js"></script>
+        <script src="/javascripts/jquery-cropper.min.js"></script>
+        <script src="/javascripts/register.js"></script>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+    </body>
+
+</html>

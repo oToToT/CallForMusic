@@ -1,13 +1,14 @@
-var mongoose = require('mongoose');
-var passportLocalMongoose = require('passport-local-mongoose');
+const mongoose = require('mongoose');
+const passportLocalMongoose = require('passport-local-mongoose');
 
 mongoose.Promise = require('bluebird');
-var MonConn = mongoose.createConnection('mongodb://127.0.0.1:27017/MusicGameAccount');
-var Schema = mongoose.Schema;
+const MonConn = mongoose.createConnection('mongodb://127.0.0.1:27017/MusicGameAccount');
+const Schema = mongoose.Schema;
 
-var AccountSchema = new Schema({
+const AccountSchema = new Schema({
     username: String,
-    password: String
+    introduction: String,
+    icon: String
 });
 
 // For more setting, visit https://github.com/saintedlama/passport-local-mongoose#options
