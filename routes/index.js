@@ -14,10 +14,15 @@ router.get('/', function (req, res) {
     if (typeof req.user === 'undefined') {
         res.render('index', {
             title: 'Call For Music - A New Style Music Game',
-            css: ['/stylesheets/index.css']
+            css: ['/stylesheets/index.css'],
+            link: [{url: '/register', text: 'Register'}, {url: '/login', text: 'Login'}]
         });
     } else {
-        res.redirect('game');
+        res.render('index', {
+            title: 'Call For Music - A New Style Music Game',
+            css: ['/stylesheets/index.css'],
+            link: [{url: '/setting', text: 'Setting'}, {url: '/game', text: 'Play'}]
+        });
     }
 });
 
