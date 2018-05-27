@@ -1,54 +1,55 @@
 {
-    "name": "callformusic",
-    "version": "0.0.0",
-    "private": true,
-    "scripts": {
-        "start": "node ./bin/www"
-    },
-    "dependencies": {
-        "bluebird": "^3.5.1",
-        "body-parser": "~1.17.1",
-        "cookie-parser": "~1.4.3",
-        "debug": "~2.6.3",
-        "ejs": "^2.5.9",
-        "eslint": "^4.19.1",
-        "eslint-config-google": "^0.9.1",
-        "express": "^4.16.3",
-        "express-session": "^1.15.5",
-        "helmet": "^3.12.0",
-        "mobile-detect": "^1.4.1",
-        "mongoose": "^4.13.12",
-        "morgan": "~1.8.1",
-        "passport": "^0.4.0",
-        "passport-local": "^1.0.0",
-        "passport-local-mongoose": "^4.5.0",
-        "passport.socketio": "^3.7.0",
-        "req-flash": "0.0.3",
-        "serve-favicon": "~2.4.2",
-        "socket.io": "^2.1.0"
-    },
-    "devDependencies": {
-        "passport-facebook": "^2.1.1",
-        "passport-google-oauth": "^1.0.0",
-        "passport-http-oauth": "^0.1.3",
-        "passport-openid": "^0.4.0",
-        "passport-twitter": "^1.0.4"
-    },
-    "description": "Call For Music ===",
-    "main": "bin/www",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/oToToT/CallForMusic.git"
-    },
-    "keywords": [
-        "game",
-        "music",
-        "web"
-    ],
-    "author": "oToToT",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/oToToT/CallForMusic/issues"
-    },
-    "homepage": "https://github.com/oToToT/CallForMusic#readme"
+  "name": "callformusic",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "body-parser": "~1.17.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "ejs": "^2.5.9",
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1",
+    "express": "^4.16.3",
+    "express-session": "^1.15.5",
+    "helmet": "^3.12.0",
+    "mobile-detect": "^1.4.1",
+    "mongoose": "^4.13.12",
+    "morgan": "~1.8.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^4.5.0",
+    "passport.socketio": "^3.7.0",
+    "recaptcha2": "^1.3.2",
+    "req-flash": "0.0.3",
+    "serve-favicon": "~2.4.2",
+    "socket.io": "^2.1.0"
+  },
+  "devDependencies": {
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "passport-http-oauth": "^0.1.3",
+    "passport-openid": "^0.4.0",
+    "passport-twitter": "^1.0.4"
+  },
+  "description": "Call For Music ===",
+  "main": "bin/www",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oToToT/CallForMusic.git"
+  },
+  "keywords": [
+    "game",
+    "music",
+    "web"
+  ],
+  "author": "oToToT",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oToToT/CallForMusic/issues"
+  },
+  "homepage": "https://github.com/oToToT/CallForMusic#readme"
 }

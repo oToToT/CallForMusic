@@ -32,3 +32,6 @@ npm-debug.log
 
 # Editor Setting
 .vscode
+
+# reCAPTCHA key
+models/reCAPTCHA.js

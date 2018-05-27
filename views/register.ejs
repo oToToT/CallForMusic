@@ -8,23 +8,31 @@
                     <div class="card border-primary bg-light">
                         <div class="bg-white text-primary card-header text-center">註冊Call For Music</div>
                         <div class="card-body">
-                            <form action="/users/register" method="POST">
+                            <% if(typeof errMsg != "undefined"){ %>
+                        	    <div class="alert alert-danger" role="alert">
+                                    <%= errMsg %>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                        	    </div>
+                        	<% } %>
+                            <form action="/register" method="POST">
                                 <div class="form-group text-center">
                                     <div class="rounded-circle" id="imgUpload" data-url='/images/cropped_avatar.png'>Upload Image</div>
                                     <input id="icon" type="file" name="icon" hidden="hidden" />
                                 </div>
                                 <div class="form-group">
                                     <label for="username">帳號：</label>
-                                    <input class="form-control input-lg" id="username" type="text" name="username" placeholder="請輸入帳號" />
+                                    <input class="form-control input-lg" id="username" type="text" name="username" placeholder="請輸入帳號" required/>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="password">密碼：</label>
-                                        <input class="form-control input-lg" id="password" type="password" name="password" placeholder="請輸入密碼" />
+                                        <input class="form-control input-lg" id="password" type="password" name="password" placeholder="請輸入密碼" required/>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="passwcheckPasswordord">確認密碼：</label>
-                                        <input class="form-control input-lg" id="checkPassword" type="password" placeholder="請再次輸入密碼" />
+                                        <input class="form-control input-lg" id="checkPassword" type="password" placeholder="請再次輸入密碼" required/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -32,9 +40,10 @@
                                     <textarea class="form-control" id="introduction" type="password" name="introduction" rows="5" placeholder="向眾人介紹自己">Hello, World</textarea>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-12 g-recaptcha" data-sitekey="6Lftm1sUAAAAAIdXCNYWPNDp3tIPYRkxhPsXkMAx"></div>
+                                    <div class="col-sm-12" id='reCAPTCHA'></div>
+                                    <!--<input type="hidden" id="reCAPTCHA_TOKEN" name="g-recaptcha-response">-->
                                 </div>
-                                <button class="btn btn-primary btn-large btn-block" type="submit">Register</button>
+                                <input id="submit" type="submit" class="btn btn-primary btn-large btn-block" disabled value="Register">
                             </form>
                         </div>
                     </div>
@@ -69,7 +78,7 @@
         <script src="/javascripts/cropper.min.js"></script>
         <script src="/javascripts/jquery-cropper.min.js"></script>
         <script src="/javascripts/register.js"></script>
-        <script src='https://www.google.com/recaptcha/api.js'></script>
+        <script src='https://www.google.com/recaptcha/api.js?onload=render_recaptcha&render=explicit' async defer></script>
     </body>
 
 </html>

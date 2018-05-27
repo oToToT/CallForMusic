@@ -1,8 +1,8 @@
-/* globals swal */
+/* globals swal, grecaptcha */
 $('#imgUpload').click(() => {
     $('#icon').click();
 });
-$('#icon').change(function(e) {
+$('#icon').change(function (e) {
     if (e.originalEvent.target.files.length != 1) {
         swal('Error', 'Please Choose Exactly One Image', 'error');
         return;
@@ -16,7 +16,7 @@ $('#icon').change(function(e) {
     $(this).val('');
     $('#cropImage').modal('show');
 });
-$('#cropImage').on('shown.bs.modal', ()=>{
+$('#cropImage').on('shown.bs.modal', () => {
     $('#hiddenIcon').cropper({
         viewMode: 2,
         aspectRatio: 1,
@@ -25,19 +25,33 @@ $('#cropImage').on('shown.bs.modal', ()=>{
         rotatable: false,
         movable: false
     });
-}).on('hidden.bs.modal', ()=>{
+}).on('hidden.bs.modal', () => {
     $('#hiddenIcon').cropper('destroy');
 });
-$('#cropIt').click(()=>{
-    $('#hiddenIcon').cropper('getCroppedCanvas').toBlob((b)=>{
+$('#cropIt').click(() => {
+    $('#hiddenIcon').cropper('getCroppedCanvas').toBlob((b) => {
         const url = URL.createObjectURL(b);
         $('#imgUpload').data('url', url);
-        $('#imgUpload').css('background-image', 'url(\''+url+'\')');
+        $('#imgUpload').css('background-image', 'url(\'' + url + '\')');
     });
     $('#cropImage').modal('hide');
 });
-$('#imgUpload').hover(function(){
-    $(this).css('background-image', 'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)),url(\''+$(this).data('url')+'\')');
-},function(){
-    $(this).css('background-image', 'url(\''+$(this).data('url')+'\')');
+$('#imgUpload').hover(function () {
+    $(this).css('background-image', 'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)),url(\'' + $(this).data('url') + '\')');
+}, function () {
+    $(this).css('background-image', 'url(\'' + $(this).data('url') + '\')');
 });
+
+function render_recaptcha() {
+    grecaptcha.render('reCAPTCHA', {
+        'sitekey': '6Lftm1sUAAAAAIdXCNYWPNDp3tIPYRkxhPsXkMAx',
+        'callback': (token)=>{
+            // $('#reCAPTCHA_TOKEN').val(token);
+            $('#submit').removeAttr('disabled');
+        },
+        'expired-callback': ()=>{
+            // $('#reCAPTCHA_TOKEN').val('');
+            $('#submit').attr('disabled', 'disabled');
+        }
+    });
+}

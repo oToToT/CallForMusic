@@ -13,3 +13,6 @@ Shake your mobile devices to hit the notes
 - Display
 - Game Core
 - DEBUGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+# Usage
+Make sure replace reCAPTCHA.example.js with your own

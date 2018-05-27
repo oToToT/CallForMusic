@@ -1,6 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const Account = require('../models/account');
+const reCAPTCHA = require('../models/reCAPTCHA');
 const MobileDetect = require('mobile-detect');
 const router = express.Router();
 
@@ -55,7 +56,16 @@ router.get('/logout', function (req, res) {
     res.redirect('./');
 });
 
-router.post('/register', function (req, res) {
+router.post('/register', reCAPTCHA, function (req, res) {
+    console.log(req.body);
+    if(req.body.username === ''){
+        req.flash('error', '請輸入帳號');
+        return res.redirect('/register');
+    }
+    if(req.body.password === ''){
+        req.flash('error', '請輸入密碼');
+        return res.redirect('/register');
+    }
     Account.register(new Account({
         username: req.body.username,
         introduction: req.body.intro,
@@ -65,7 +75,7 @@ router.post('/register', function (req, res) {
     function (err) {
         if (err) {
             req.flash('error', err.message);
-            return res.redirect('/users/register');
+            return res.redirect('/register');
         }
         passport.authenticate('local')(req, res, function () {
             res.redirect('./');
@@ -73,8 +83,8 @@ router.post('/register', function (req, res) {
     });
 });
 router.post('/login', passport.authenticate('local', {
-    successRedirect: '/users',
-    failureRedirect: '/users/login',
+    successRedirect: '/setting',
+    failureRedirect: '/login',
     failureFlash: true
 }));
 
