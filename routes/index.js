@@ -3,6 +3,10 @@ const passport = require('passport');
 const Account = require('../models/account');
 const reCAPTCHA = require('../models/reCAPTCHA');
 const MobileDetect = require('mobile-detect');
+const multer = require('multer');
+const mimeTypes = require('mime-types');
+const fs = require('fs');
+const path = require('path');
 const router = express.Router();
 
 /* GET home page. */
@@ -56,29 +60,56 @@ router.get('/logout', function (req, res) {
     res.redirect('./');
 });
 
-router.post('/register', reCAPTCHA, function (req, res) {
-    console.log(req.body);
-    if(req.body.username === ''){
-        req.flash('error', '請輸入帳號');
-        return res.redirect('/register');
+const upload = multer({
+    'storage': multer.diskStorage({
+        destination: function (req, file, callback) {
+            console.log(path.resolve(__dirname, '..', 'uploads'));
+            callback(null, path.resolve(__dirname, '..', 'uploads'));
+        },
+        filename: function (req, file, callback) {
+            const name = Date.now().toString() + '.' + mimeTypes.extension(file.mimetype);
+            req.body.icon = name;
+            callback(null, name);
+        }
+    })
+});
+
+
+router.post('/register', upload.single('icon'), reCAPTCHA, function (req, res) {
+    console.log(req.file);
+    if (req.body.username === '') {
+        fs.unlink(path.join(req.file.destination, req.file.filename));
+        return res.json({
+            'done': false,
+            'error': '請輸入帳號'
+        });
     }
-    if(req.body.password === ''){
-        req.flash('error', '請輸入密碼');
-        return res.redirect('/register');
+    if (req.body.password === '') {
+        fs.unlink(path.join(req.file.destination, req.file.filename));
+        return res.json({
+            'done': false,
+            'error': '請輸入密碼'
+        });
     }
     Account.register(new Account({
         username: req.body.username,
         introduction: req.body.intro,
-        icon: req.body.imagePath
+        icon: path.join(req.file.destination, req.body.username+path.extname(req.file.filename))
     }),
     req.body.password,
     function (err) {
         if (err) {
-            req.flash('error', err.message);
-            return res.redirect('/register');
+            fs.unlink(path.join(req.file.destination, req.file.filename));
+            return res.json({
+                'done': false,
+                'error': err.message
+            });
         }
         passport.authenticate('local')(req, res, function () {
-            res.redirect('./');
+            fs.rename(path.join(req.file.destination, req.file.filename), path.join(req.file.destination, req.body.username+path.extname(req.file.filename)));
+            return res.json({
+                'done': true
+            });
         });
     });
 });

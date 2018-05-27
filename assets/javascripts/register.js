@@ -45,13 +45,48 @@ $('#imgUpload').hover(function () {
 function render_recaptcha() {
     grecaptcha.render('reCAPTCHA', {
         'sitekey': '6Lftm1sUAAAAAIdXCNYWPNDp3tIPYRkxhPsXkMAx',
-        'callback': (token)=>{
-            // $('#reCAPTCHA_TOKEN').val(token);
+        'callback': ()=>{
             $('#submit').removeAttr('disabled');
         },
         'expired-callback': ()=>{
-            // $('#reCAPTCHA_TOKEN').val('');
             $('#submit').attr('disabled', 'disabled');
         }
     });
 }
+$('form#regForm').submit(function(e){
+    e.preventDefault();
+    if($('#checkPassword').val() != $('#password').val()){
+        $('#errMsg').text('請確認密碼輸入相同');
+        $('#errDialog').show();
+        return;
+    }
+    swal('上傳圖片中...');
+    let formData = new FormData(this);
+    $.ajax({
+        url: $('#imgUpload').data('url'),
+        type: 'GET',
+        dataType: 'blob',
+        success: function(data){
+            formData.set('icon', data);
+            $.ajax({
+                url: '/register',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function(dta){
+                    swal.close();
+                    if(dta.done){
+                        location.href = '/';
+                    } else {
+                        grecaptcha.reset();
+                        $('#errMsg').text(dta.error);
+                        $('#errDialog').show();
+                    }
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        }
+    });
+});
