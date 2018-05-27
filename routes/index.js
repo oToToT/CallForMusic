@@ -63,7 +63,6 @@ router.get('/logout', function (req, res) {
 const upload = multer({
     'storage': multer.diskStorage({
         destination: function (req, file, callback) {
-            console.log(path.resolve(__dirname, '..', 'uploads'));
             callback(null, path.resolve(__dirname, '..', 'uploads'));
         },
         filename: function (req, file, callback) {
@@ -75,7 +74,7 @@ const upload = multer({
 });
 
 
-router.post('/register', upload.single('icon'), reCAPTCHA, function (req, res) {
+router.post('/register', upload.single('icon'), reCAPTCHA.json, function (req, res) {
     console.log(req.file);
     if (req.body.username === '') {
         fs.unlink(path.join(req.file.destination, req.file.filename));
@@ -113,7 +112,7 @@ router.post('/register', upload.single('icon'), reCAPTCHA, function (req, res) {
         });
     });
 });
-router.post('/login', passport.authenticate('local', {
+router.post('/login', reCAPTCHA.flash, passport.authenticate('local', {
     successRedirect: '/setting',
     failureRedirect: '/login',
     failureFlash: true
