@@ -26,14 +26,14 @@ router.get('/', function (req, res) {
     }
 });
 
-router.get('/profile/:id', function (req, res) {
-
+router.get('/profile/:id', function (req, res, id) {
+    return res.send(id);
 });
 
 router.get('/setting', function (req, res) {
     if (typeof req.user !== 'undefined') {
         res.render('setting', {
-            title: 'Call For Music',
+            title: '設定 | Call For Music',
             css: ['/stylesheets/bootstrap.min.css'],
             errMsg: req.flash().error,
             user: req.user
@@ -43,6 +43,9 @@ router.get('/setting', function (req, res) {
     }
 });
 router.get('/register', function (req, res) {
+    if (typeof req.user !== 'undefined') {
+        return res.redirect('/');
+    }
     res.render('register', {
         title: '註冊 | Call For Music',
         css: ['/stylesheets/bootstrap.min.css',
@@ -54,6 +57,9 @@ router.get('/register', function (req, res) {
     });
 });
 router.get('/login', function (req, res) {
+    if (typeof req.user !== 'undefined') {
+        return res.redirect('/');
+    }
     res.render('login', {
         title: '登入 | Call For Music',
         css: ['/stylesheets/bootstrap.min.css'],
@@ -80,7 +86,6 @@ const upload = multer({
 
 
 router.post('/register', upload.single('icon'), reCAPTCHA.json, function (req, res) {
-    console.log(req.file);
     if (req.body.username === '') {
         fs.unlink(path.join(req.file.destination, req.file.filename));
         return res.json({
@@ -97,8 +102,8 @@ router.post('/register', upload.single('icon'), reCAPTCHA.json, function (req, r
     }
     Account.register(new Account({
         username: req.body.username,
-        introduction: req.body.intro,
-        icon: path.join(req.file.destination, req.body.username+path.extname(req.file.filename))
+        introduction: req.body.introduction,
+        icon: req.body.username+path.extname(req.file.filename)
     }),
     req.body.password,
     function (err) {
@@ -118,9 +123,10 @@ router.post('/register', upload.single('icon'), reCAPTCHA.json, function (req, r
     });
 });
 router.post('/login', reCAPTCHA.flash, passport.authenticate('local', {
-    successRedirect: '/setting',
     failureRedirect: '/login',
     failureFlash: true
-}));
+}), function(req, res){
+    return res.redirect('/');
+});
 
 module.exports = router;

@@ -16,16 +16,17 @@
                     <a class="nav-item nav-link" href="/history">History</a>
                     <a class="nav-item nav-link active" href="/setting">Setting<span class="sr-only">(current)</span></a>
                 </div>
-                <div>
-                    <span class="nav-item navbar-text mr-3">Hi, <%= user.username %> </span>
-                    <a href="/logout" role="button" class="nav-item btn btn-outline-warning">Logout</a>
+                <div class="navbar-nav">
+                    <a href="/profile/<%= user.username %>" class="nav-item nav-link mr-3">
+                        <img height="40" class="rounded-circle mr-2" src="/profile_images/<%= user.icon %>" >   
+                        <%= user.username %>
+                    </a>
                 </div>
+                <a href="/logout" role="button" class="nav-item btn btn-outline-warning">Logout</a>
             </div>
         </nav>
         <div class="container">
-            <h1> <%= user.username %> </h1>
-            <br>
-            <a href="/users/logout">Logout</a>
+            <div></div>
         </div>
         <script src="/javascripts/jquery.min.js"></script>
         <script src="/javascripts/popper.min.js"></script>

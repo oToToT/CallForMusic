@@ -37,6 +37,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'assets')));
+app.use('/profile_images', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/', require('./routes/index'));
 app.use('/game', require('./routes/game'));

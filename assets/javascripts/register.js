@@ -45,17 +45,29 @@ $('#imgUpload').hover(function () {
 function render_recaptcha() {
     grecaptcha.render('reCAPTCHA', {
         'sitekey': '6Lftm1sUAAAAAIdXCNYWPNDp3tIPYRkxhPsXkMAx',
-        'callback': ()=>{
+        'callback': () => {
             $('#submit').removeAttr('disabled');
         },
-        'expired-callback': ()=>{
+        'expired-callback': () => {
             $('#submit').attr('disabled', 'disabled');
         }
     });
 }
-$('form#regForm').submit(function(e){
+
+function resizeReCaptcha() {
+    const width = $('#reCAPTCHA').parent().width();
+    const scale = Math.min(width / 302, 1);
+    $('#reCAPTCHA').css('transform', 'scale(' + scale + ')');
+    $('#reCAPTCHA').css('-webkit-transform', 'scale(' + scale + ')');
+    $('#reCAPTCHA').css('transform-origin', '0 0');
+    $('#reCAPTCHA').css('-webkit-transform-origin', '0 0');
+}
+resizeReCaptcha();
+$(window).on('resize', resizeReCaptcha);
+
+$('form#regForm').submit(function (e) {
     e.preventDefault();
-    if($('#checkPassword').val() != $('#password').val()){
+    if ($('#checkPassword').val() != $('#password').val()) {
         $('#errMsg').text('請確認密碼輸入相同');
         $('#errDialog').show();
         return;
@@ -66,16 +78,16 @@ $('form#regForm').submit(function(e){
         url: $('#imgUpload').data('url'),
         type: 'GET',
         dataType: 'blob',
-        success: function(data){
+        success: function (data) {
             formData.set('icon', data);
             $.ajax({
                 url: '/register',
                 type: 'POST',
                 data: formData,
                 dataType: 'json',
-                success: function(dta){
+                success: function (dta) {
                     swal.close();
-                    if(dta.done){
+                    if (dta.done) {
                         location.href = '/';
                     } else {
                         grecaptcha.reset();
