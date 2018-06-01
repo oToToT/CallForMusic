@@ -34,7 +34,11 @@ router.get('/setting', function (req, res) {
     if (typeof req.user !== 'undefined') {
         res.render('setting', {
             title: '設定 | Call For Music',
-            css: ['/stylesheets/bootstrap.min.css'],
+            css: ['/stylesheets/bootstrap.min.css',
+                '/stylesheets/setting.css',
+                '/stylesheets/sweetalert2.min.css',
+                '/stylesheets/cropper.min.css'
+            ],
             errMsg: req.flash().error,
             user: req.user
         });
@@ -115,12 +119,37 @@ router.post('/register', upload.single('icon'), reCAPTCHA.json, function (req, r
             });
         }
         passport.authenticate('local')(req, res, function () {
-            fs.rename(path.join(req.file.destination, req.file.filename), path.join(req.file.destination, req.body.username+path.extname(req.file.filename)));
+            fs.renameSync(path.join(req.file.destination, req.file.filename), path.join(req.file.destination, req.body.username+path.extname(req.file.filename)));
             return res.json({
                 'done': true
             });
         });
     });
+});
+router.post('/checkPassword', async function(req, res) {
+    if(!req.user) return res.json({done: false, error: '請先登入'});
+    const auth = await req.user.authenticate(req.body.password);
+    return res.json({done: auth.user, error: auth.error?auth.error.message:''});
+});
+router.post('/edit', upload.single('icon'), async function (req, res) {
+    if(!req.user) return res.json({done: false, error: '請先登入'});
+    if (req.body.username !== req.user.username) {
+        fs.unlink(path.join(req.file.destination, req.file.filename));
+        return res.json({
+            'done': false,
+            'error': '請輸入帳號'
+        });
+    }
+    try{
+        const ret = await req.user.changePassword(req.body.originalPassword, req.body.password);
+        req.user = ret;
+        req.user.introduction = req.body.introduction;
+        req.user.save();
+        fs.renameSync(path.join(req.file.destination, req.file.filename), path.join(req.file.destination, req.body.username+path.extname(req.file.filename)));
+        return res.json({done: true});
+    }catch(e){
+        return res.json({done: false, error: e.message});
+    }
 });
 router.post('/login', reCAPTCHA.flash, passport.authenticate('local', {
     failureRedirect: '/login',

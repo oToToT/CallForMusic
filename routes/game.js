@@ -46,7 +46,7 @@ router.get('/control', function (req, res) {
         });
     }
 });
-router.get('/game/train', function (req, res) {
+router.get('/train', function (req, res) {
     res.render('game/train');
 });
 

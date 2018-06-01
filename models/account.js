@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
 
 mongoose.Promise = require('bluebird');
-const MonConn = mongoose.createConnection('mongodb://127.0.0.1:27017/MusicGameAccount');
+const MonConn = mongoose.createConnection('mongodb://127.0.0.1:27017/CallForMusic');
 const Schema = mongoose.Schema;
 
 const AccountSchema = new Schema({
@@ -23,6 +23,6 @@ AccountSchema.plugin(passportLocalMongoose, {
         TooManyAttemptError: '帳號目前無法登入，請勿大量嘗試各式密碼'
     }
 });
-var User = MonConn.model('Account', AccountSchema);
+var User = MonConn.model('account', AccountSchema);
 
 module.exports = User;

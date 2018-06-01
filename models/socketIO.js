@@ -2,12 +2,10 @@ var MobileDetect = require('mobile-detect');
 var roomdata = {};
 const fs = require('fs');
 const write_stream = fs.createWriteStream('music_data');
-let tf = true;
 
 function IOHandler(io) {
     io.on('connection', (socket) => {
         console.log('hi!!');
-        tf = true;
         const roomname = socket.request.user.username;
         let md = new MobileDetect(socket.request.headers['user-agent']);
         if (typeof roomdata[roomname] === 'undefined') roomdata[roomname] = {};
@@ -36,9 +34,8 @@ function IOHandler(io) {
             roomdata[roomname].devices = devices;
         });
         socket.on('data', (data) => {
-            if (!tf) return;
             write_stream.write(data.tf ? '1' : '0');
-            for (let i = 0; i < 128; i++) {
+            for (let i = 0; i < 512; i++) {
                 write_stream.write(` ${i+1}:${data.arr[i]}`);
             }
             write_stream.write('\n');

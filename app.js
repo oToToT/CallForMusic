@@ -8,7 +8,6 @@ const session = require('express-session');
 const flash = require('req-flash');
 const helmet = require('helmet');
 const passport = require('passport');
-const mongoose = require('mongoose');
 const LocalStrategy = require('passport-local').Strategy;
 const socketIO = require('socket.io');
 const passportSocketIo = require('passport.socketio');
@@ -56,9 +55,11 @@ io.use(passportSocketIo.authorize({
     store: sessionStore,
     passport: passport,
     success: function(data, accept) {
-        accept();
+        // console.log(data);
+        accept(null, true);
     },
     fail: function(data, message, error, accept) {
+        // console.log(data, message);
         return accept(new Error(message));
     }
 }));
@@ -72,7 +73,7 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function(err, req, res) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};

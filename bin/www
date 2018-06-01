@@ -24,6 +24,7 @@ var server = http.createServer(app);
 /**
  * Handle socket.io event
  */
+
 var io = app.io;
 io.attach(server);
 require('../models/socketIO')(io);
