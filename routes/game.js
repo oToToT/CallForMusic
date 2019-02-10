@@ -1,6 +1,4 @@
 const express = require('express');
-const passport = require('passport');
-const Account = require('../models/account');
 const MobileDetect = require('mobile-detect');
 const router = express.Router();
 const Root = 'game';

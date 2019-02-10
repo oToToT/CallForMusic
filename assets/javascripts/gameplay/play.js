@@ -1,13 +1,22 @@
-/* globals io, SHA256, swal */
+/* globals io, SHA256, swal, Vue */
 (() => {
+    const audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+    let source = audioCtx.createBufferSource();
+    let analyser = audioCtx.createAnalyser();
+    analyser.fftSize = FFT_SIZE;
+    const FFT_SIZE = 512;
+    let vm = new Vue({
+        el: '#plot',
+        data: {
+            time_domain: new Uint8Array(FFT_SIZE),
+            hit: false
+        }
+    });
     function process_game() {
         var game_status = {
             paused: true,
-            prev_time: null,
             score: 0,
-            notes: [],
-            player: undefined,
-            player_status: -1
+            notes: []
         };
         (function() {
             var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
@@ -15,22 +24,9 @@
             window.requestAnimationFrame = requestAnimationFrame;
         })();
 
-        function gamerender(time) {
-            if (game_status.prev_time === null) game_status.prev_time = time;
-            if (!game_status.paused) {
-                for (var note of game_status.notes) {
-                    note.dataset.pos = Number(note.dataset.pos) + (time - game_status.prev_time) / 5;
-                    note.style.top = note.dataset.pos + 'px';
-                }
-                if (typeof game_status.player != 'undefined' && game_status.player_status === 2) {
-                    game_status.player.playVideo();
-                }
-            } else {
-                if (typeof game_status.player != 'undefined' && game_status.player_status === 1) {
-                    game_status.player.pauseVideo();
-                }
-            }
-            game_status.prev_time = time;
+        function gamerender() {
+            analyser.getByteTimeDomainData(vm.time_domain);
+            vm.$forceUpdate();
             requestAnimationFrame(gamerender);
         }
         requestAnimationFrame(gamerender);
@@ -120,11 +116,10 @@
     }
     init_dragupload();
 
-    function process_file(files) {
+    async function process_file(files) {
         let read_for_hash = new FileReader();
         read_for_hash.onload = async(e) => {
             const hash = await SHA256.sha256Buffer(e.target.result);
-            console.log(hash);
             const result = await swal({
                 title: 'Successfully Uploaded',
                 html: `Are you sure to play <span style="font-weight:bolder;text-decoration:underline;">${files[0].name}</span> ?`,
@@ -135,6 +130,9 @@
                 confirmButtonText: 'OK, Lets\' Rock'
             });
             if (result.value) {
+                source.buffer = await audioCtx.decodeAudioData(e.target.result);
+                source.connect(analyser);
+                analyser.connect(audioCtx.destination);
                 $('#upload_file').css('transform', 'scale(0, 0)');
                 process_game();
             } else {

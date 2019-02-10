@@ -8,11 +8,12 @@
         * {
             margin: 0;
         }
-        
         .cool {
             display: inline-block;
-            width: calc( (100vw - 100px) / 512);
-            background-color: black;
+            width: calc( (100vw - 100px) / 256);
+            border-top-width: 5px;
+            border-top-color: black;
+            border-top-style: solid;
         }
     </style>
 </head>
@@ -29,24 +30,15 @@
     <br>
     <div id="plot">
         <div style="height: 550px;">
-            <div style='display:inline-block;height:550px;width:6px;' v-bind:style="{ backgroundColor: hit?'red':'transparent' }"></div>
-            <div class='cool' v-for="data in freq_domain" v-bind:style="{ height: `${data * 2}px` }"></div>
+            <div class='cool' v-for="data in time_domain" v-bind:style="{ height: `${data * 2}px` }"></div>
         </div>
     </div>
     <script src="/javascripts/vue.js"></script>
-    <script src="/javascripts/queue.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/javascripts/libsvm-asmjs/libsvm.js"></script>
     <script>
-        const socket = io('/');
-        const FFT_SIZE = 1024,
-            time_threshold = 100,
-            time_elpased = 224,
-            note_data = [10.0760, 13.8260, 17.1070, 17.5760, 18.0450, 18.5140, 18.9820, 18.9830, 19.4510, 19.9200, 20.3890, 20.8570, 20.8580, 21.0920, 21.3260, 21.7950, 22.2640, 22.7320, 22.7330, 23.2010, 23.6700, 24.1390, 24.4900, 24.8420, 25.0760, 25.3100, 25.5450, 25.7790, 26.0140, 26.2480, 26.4820, 26.7160, 26.9510, 27.1850, 27.4200, 27.6540, 27.8890, 28.1230, 28.3570, 28.5910, 28.8260, 29.0610, 29.2950, 29.5290, 29.7640, 29.9980, 30.2320, 30.4670, 30.7010, 30.8180, 30.9360, 31.0530, 31.1700, 31.2870, 31.4040, 31.5210, 31.6390, 31.7560, 31.8730, 31.9900, 32.1070, 32.2250, 32.3420, 32.4590, 32.5760, 34.4510, 35.8570, 36.3260, 36.7950, 37.2640, 37.7320, 37.7330, 38.2010, 38.4360, 38.6700, 38.9040, 39.1390, 39.3730, 39.6070, 39.7250, 39.8420, 39.9590, 40.0760, 40.3110, 40.5450, 41.0140, 41.2480, 41.4820, 41.7170, 41.9510, 42.1860, 42.4200, 42.8890, 43.1230, 43.3570, 43.5920, 43.8260, 44.0610, 44.2950, 44.7640, 44.9980, 45.2320, 45.4670, 45.7010, 45.9360, 46.1700, 46.4040, 46.6390, 46.8730, 47.1070, 47.3420, 47.5760, 47.8110, 48.0450, 48.5140, 48.7480, 48.9820, 49.2170, 49.4510, 49.6860, 49.9200, 50.3890, 50.6230, 50.8570, 51.0920, 51.3260, 51.5610, 51.7950, 52.2640, 52.4980, 52.7320, 52.9670, 53.2010, 53.4360, 53.6700, 53.9040, 54.1390, 54.3730, 54.6070, 54.8420, 55.0760, 55.4280, 55.5450, 55.7790, 56.2480, 56.2480, 56.4820, 56.9510, 57.3030, 57.4200, 57.6540, 58.1230, 58.1230, 58.3570, 58.8260, 59.1780, 59.2950, 59.5290, 59.9980, 59.9980, 60.2320, 60.7010, 61.0530, 61.1700, 61.4040, 61.8730, 61.8730, 62.1070, 62.5760, 63.0450, 63.2790, 63.7480, 63.9820, 64.1000, 64.4510, 64.9200, 65.1540, 65.6230, 65.8570, 65.9750, 66.3260, 67.0290, 67.4980, 67.8500, 68.2010, 69.6070, 70.0760, 70.3110, 70.5450, 70.7790, 70.8960, 71.2480, 71.4820, 71.7160, 71.7170, 71.9510, 72.1860, 72.4200, 72.6540, 72.7710, 73.1230, 73.3570, 73.5910, 73.5920, 73.8260, 74.0610, 74.2950, 74.5290, 74.6460, 74.9980, 75.2320, 75.4660, 75.4670, 75.7010, 75.9360, 76.0530, 76.1700, 76.4040, 76.8730, 77.1070, 77.5760, 77.8110, 78.0450, 78.2790, 78.3960, 78.7480, 78.9820, 79.2160, 79.2170, 79.4510, 79.6860, 79.9200, 80.1540, 80.2710, 80.6230, 80.8570, 81.0910, 81.0920, 81.3260, 81.5610, 81.7950, 82.0290, 82.1460, 82.4980, 82.7320, 82.9660, 82.9670, 83.2010, 83.4360, 83.5530, 83.6700, 83.9040, 84.3730, 84.6070, 85.0760, 85.3110, 85.5450, 85.7790, 85.8960, 86.2480, 86.4820, 86.7170, 86.8340, 86.9510, 87.1860, 87.4200, 87.6540, 87.7710, 88.1230, 88.3570, 88.5920, 88.7090, 88.8260, 89.0610, 89.2950, 89.5290, 89.6460, 89.9980, 90.2320, 90.4670, 90.5840, 90.7010, 90.9360, 91.0530, 91.2870, 91.5210, 91.8730, 92.1070, 92.5760, 94.4510, 95.8570, 96.3260, 96.5600, 96.7950, 97.0290, 97.2640, 97.4980, 97.7320, 97.9660, 98.2010, 98.4350, 98.6700, 98.9040, 99.1390, 99.3730, 99.6070, 99.8410, 100.0760, 100.3110, 100.5450, 100.7790, 101.0140, 101.2480, 101.4820, 101.7170, 101.9510, 102.0680, 102.1860, 102.3030, 102.4200, 102.5370, 102.6540, 102.7710, 102.8890, 103.0060, 103.1230, 103.2400, 103.3570, 103.4750, 103.5920, 103.7090, 103.8260];
+        const FFT_SIZE = 256;
         let vm = new Vue({
             el: '#plot',
             data: {
-                freq_domain: new Int32Array(FFT_SIZE >> 1),
                 time_domain: new Uint8Array(FFT_SIZE),
                 hit: false
             }
@@ -55,7 +47,6 @@
             let reader = new FileReader();
             reader.onload = async(e) => {
                 document.getElementById("pg").style.display = "none";
-                const wh = document.getElementById("choice").value === "1";
                 const audioCtx = new(window.AudioContext || window.webkitAudioContext)();
                 let source = audioCtx.createBufferSource();
                 source.buffer = await audioCtx.decodeAudioData(e.target.result);
@@ -65,46 +56,9 @@
                 analyser.connect(audioCtx.destination);
                 source.start();
 
-                let beat_pos = 0,
-                    init_time = -1,
-                    pre_queue = new Queue(),
-                    avg_array = new Uint32Array(analyser.frequencyBinCount);
-
                 function process_fft_data(timer) {
-                    if (init_time === -1) init_time = timer;
-                    const cur_time = timer - init_time;
-                    while (beat_pos < note_data.length &&
-                        note_data[beat_pos] * 1000 + time_threshold <= cur_time) {
-                        beat_pos++;
-                    }
-                    vm.hit = (beat_pos < note_data.length &&
-                        note_data[beat_pos] * 1000 <= cur_time &&
-                        cur_time < note_data[beat_pos] * 1000 + time_threshold);
                     analyser.getByteTimeDomainData(vm.time_domain);
-
-                    let freq_array = new Uint8Array(analyser.frequencyBinCount);
-                    analyser.getByteFrequencyData(freq_array);
-                    for (let i = 0; i < freq_array.length; i++) {
-                        vm.freq_domain[i] = freq_array[i];
-                    }
-                    for (let i = 0; i < freq_array.length; i++) {
-                        avg_array[i] += freq_array[i];
-                    }
-                    pre_queue.push({
-                        t: timer,
-                        freq: freq_array
-                    });
-                    while (pre_queue.front() && pre_queue.front().t + time_elpased < timer) {
-                        for (let i = 0; i < pre_queue.front().freq.length; i++) {
-                            avg_array[i] -= pre_queue.front().freq[i];
-                        }
-                        pre_queue.pop();
-                    }
-                    for (let i = 0; i < vm.freq_domain.length; i++) {
-                        vm.freq_domain[i] -= avg_array[i] / pre_queue.length;
-                    }
                     vm.$forceUpdate();
-                    if(vm.hit === wh) socket.emit('data', {arr: vm.freq_domain, tf: vm.hit});
                     requestAnimationFrame(process_fft_data);
                 }
                 requestAnimationFrame(process_fft_data);

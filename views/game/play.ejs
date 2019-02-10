@@ -31,24 +31,26 @@
                 </div>
             </div>
         </div>
-        <!--<div id="background">
-            
-        </div>
         <div id="playground">
-            <div id="falling">
-                <div id="beat_bar"></div>
+            <div id="background">
+                
             </div>
-        </div>
-        <div id="msg" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"></h5>
-                    </div>
-                    <div class="modal-body" style="text-align:center;"></div>
+            <div id="game_main">
+                <div id="falling">
+                    <div id="beat_bar"></div>
                 </div>
             </div>
-        </div>-->
+            <div id="msg" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"></h5>
+                        </div>
+                        <div class="modal-body" style="text-align:center;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script>var username = "<%= username %>";</script>
         <script src="/socket.io/socket.io.js"></script>
         <script src="/javascripts/SHA256.js"></script>
@@ -57,5 +59,6 @@
         <script src="/javascripts/bootstrap.min.js"></script>
         <script src="/javascripts/sweetalert2.all.min.js"></script>
         <script src="/javascripts/gameplay/play.js"></script>
+        <script src="/javascripts/vue.js"></script>
     </body>
 </html>
