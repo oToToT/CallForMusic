@@ -34,10 +34,9 @@
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",
     "passport-http-oauth": "^0.1.3",
-    "passport-openid": "^0.4.0",
     "passport-twitter": "^1.0.4"
   },
-  "description": "Call For Music ===",
+  "description": "Call For Music",
   "main": "bin/www",
   "repository": {
     "type": "git",
