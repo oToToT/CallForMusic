@@ -1,0 +1,16 @@
+extends layout
+block stylesheets
+  link(rel='stylesheet', href='/stylesheets/style.css')
+block content
+  .pusher
+    .ts.fluid.container
+      .ts.slate#banner
+        .cover.image
+          img(src='/images/cover.jpg')
+        h1.ts.header Call For Music
+        h2.ts.header 快點加入跟大佬一起打call吧
+        .ts.buttons
+          button.ts.large.positive.pulsing.button 立即註冊
+          .or
+          button.ts.large.primary.button 快速登入
+    
